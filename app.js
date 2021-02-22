@@ -3,10 +3,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
+const {config} = require(__dirname + "/config.js"); 
 
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+
+var token = config.MY_API_TOKEN;
+var key = config.SECRET_API_KEY;
+var list = config.MY_LIST_ID;
 
 app.get("/", function(req, res){
   res.sendFile(__dirname + "/signup.html");
@@ -34,10 +39,10 @@ app.post("/", function(req, res){
   var jsonData = JSON.stringify(data);
 
   var options = {
-    url: "https://us1.api.mailchimp.com/3.0/lists/4e22e84889",
+    url: "https://us1.api.mailchimp.com/3.0/lists/" + list,
     method: "POST",
     headers: {
-      "Authorization" : "aashayshah 352ab35daa703e6c13f45217109b9f74-us1"
+      "Authorization" : token + " " + key
     },
     body: jsonData
   };
